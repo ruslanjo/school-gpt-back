@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from src.db import init_db, db
 from src.container import app_config
 from src.api.v1.views.gpt import gpt_ns
+from src.api.v1.views.auth import auth_ns
 
 
 api = Api(title='School-GPT', docs='/docs')
@@ -24,6 +25,7 @@ def register_extensions(application: Flask, rest_api: Api) -> None:
     rest_api.init_app(application)
     migrate.init_app(application, db)
     rest_api.add_namespace(gpt_ns)
+    rest_api.add_namespace(auth_ns)
     CORS(application)
 
 

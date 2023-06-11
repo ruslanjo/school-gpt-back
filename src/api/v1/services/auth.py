@@ -51,7 +51,7 @@ class AuthService:
         )
         return access, refresh
 
-    def get_refresh_token(
+    def use_refresh_token(
             self,
             refresh_token: str
     ) -> tuple[Any, Any] | None:

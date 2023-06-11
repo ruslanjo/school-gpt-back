@@ -1,4 +1,6 @@
-from models import User
+import datetime
+
+from src.models import User, Visit
 
 
 class UserDAO:
@@ -21,3 +23,12 @@ class UserDAO:
         self.session.add(updated_entity)
         self.session.commit()
         return updated_entity
+
+    def add_login_history(self, user_id: int) -> Visit:
+        visit = Visit(
+            timestamp=datetime.datetime.utcnow(),
+            user_id=user_id,
+        )
+        self.session.add(visit)
+        self.session.commit()
+        return visit

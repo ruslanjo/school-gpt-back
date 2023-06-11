@@ -9,8 +9,8 @@ import jwt
 SALT = b'blablabla'
 HASH_NAME = 'sha256'
 NUM_ITERS_HASH = 100_000
-secret = '$3cr3t'
-algo = 'HS256'
+SECRET = '$3cr3t'
+ALGO = 'HS256'
 
 
 class PasswordHasher:
@@ -54,19 +54,19 @@ class TokenGenerator:
     def _generate_jwt_token(data: dict, expiry_time_minutes: int) -> str:
         expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=expiry_time_minutes)
         data['exp'] = calendar.timegm(expiration.timetuple())
-        return jwt.encode(data, secret, algorithm=algo)
+        return jwt.encode(data, SECRET, algorithm=ALGO)
 
     @staticmethod
     def check_jwt_token(token: str) -> dict:
         try:
             token_data = jwt.decode(
                 token,
-                secret,
-                algorithms=[algo]
+                SECRET,
+                algorithms=[ALGO]
             )
         except (jwt.exceptions.ExpiredSignatureError, jwt.exceptions.DecodeError):
             return {'result': False, 'msg': 'Token not valid'}
-        else:
-            return {'result': True, 'msg': 'Token valid', 'data': token_data}
+
+        return {'result': True, 'msg': 'Token valid', 'data': token_data}
 
 
