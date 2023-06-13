@@ -22,7 +22,7 @@ class Conversation(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False)
     question = db.Column(db.Text, nullable=False)
     model_answer = db.Column(db.Text, nullable=False)
-    is_pending = db.Column(db.Boolean, nullable=False)
+    tag = db.Column(db.String(1_000), nullable=False)
     user = relationship('User', backref='conversations')
 
 

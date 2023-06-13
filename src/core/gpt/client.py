@@ -1,4 +1,5 @@
 import abc
+import json
 import random
 
 import requests
@@ -16,7 +17,7 @@ def mock_request():
 
 class BaseGPTClient(abc.ABC):
     @abc.abstractmethod
-    def send_api_request(self, prompt: str):
+    def send_api_request(self, prompt: str, tag: str):
         pass
 
 
@@ -26,7 +27,7 @@ class OpenAIClient(BaseGPTClient):
         self.token = token
         self.sessions: dict[str, requests.Session] | None = {}
 
-    def send_api_request(self, prompt: str):
+    def send_api_request(self, prompt: str, tag: str):
         """
         Sends HTTP requests to language model API
         :param prompt: includes prompt constraint of language model and ingested student question
@@ -34,6 +35,17 @@ class OpenAIClient(BaseGPTClient):
         """
         if AppConfig.MODEL_ENVIRONMENT == ModelEnvironments.dev:
             return mock_request()
+
+        session = self.sessions.get(tag)
+        if not session:
+            session = requests.session()
+            self.sessions[tag] = session
+
+        response = session.get(
+            url=self.url, json=json.dumps(prompt)
+        )
+        return response.json()
+
 
 
 

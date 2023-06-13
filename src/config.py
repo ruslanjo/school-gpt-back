@@ -21,6 +21,6 @@ class AppConfig(BaseSettings):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MODEL_ENVIRONMENT = ModelEnvironments.dev
-
-
-print(AppConfig().SQLALCHEMY_DATABASE_URI)
+    OPENAI_URL = 'https://test'
+    OPENAI_TOKEN = 'asdasdfsdf'
+    PROMPT_PATH = os.path.join(basedir, 'data', 'prompt.json')
